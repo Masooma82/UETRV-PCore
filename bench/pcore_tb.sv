@@ -51,7 +51,7 @@ always_ff@(posedge clk ) begin
   end
 end
 
-`ifndef COMPLIANCE
+// `ifndef COMPLIANCE
 /*    Logic to dump UART logs, instruction trace or any other type 
       of logs must be added here      */
 
@@ -67,11 +67,11 @@ always_ff@(posedge clk) begin
   if (dut.uart_module.tx_valid_ff == 1)
     $fwrite(uartlog_filepointer, "%c", dut.uart_module.uart_reg_tx_ff);
 
-  if (dut.uart_ns_module.tx_valid_ff == 1)
-    $fwrite(uartlog_filepointer, "%c", dut.uart_ns_module.uart_reg_tx_ff);
+  // if (dut.uart_module.tx_valid_ff == 1)
+  //   $fwrite(uartlog_filepointer, "%c", dut.uart_module.uart_reg_tx_ff);
 end
 
-`else
+// `else
 // ====================== For RISC-V architecture tests ========================== //
 
 wire sig_en  = (dut.dbus2peri.addr == 32'h8E000000) & dut.mem_top_module.wb_dcache_top_module.cache_wr;
@@ -99,5 +99,5 @@ always_ff@(posedge clk) begin
   end
 end
 
-`endif 
+// `endif 
 endmodule

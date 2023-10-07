@@ -45,27 +45,27 @@ logic                       response_flag;
 // Dual port memory instantiation and initialization
 logic [`XLEN-1:0]          dualport_memory[`IDMEM_SIZE];
 
-`ifdef COMPLIANCE
-initial
-begin
-     // Reading the contents of imem.txt file to memory variable
-     // Not required to $readmem for COMPLIANCE Tests
-end
+// `ifdef COMPLIANCE
+// initial
+// begin
+//      // Reading the contents of imem.txt file to memory variable
+//      // Not required to $readmem for COMPLIANCE Tests
+// end
 
-`elsif RTL_SIMULATION
-initial 
-begin
-    // Reading the contents of example imem.txt file to memory variable
-     $readmemh("imem.txt", dualport_memory);  
-end
-//`endif
-`else
-initial
-begin
-     // Reading the contents of example imem.txt file to memory variable
-    // $readmemh("sdk/example-linux/imem.txt", dualport_memory);  
-end
-`endif
+// `elsif RTL_SIMULATION
+// initial 
+// begin
+//     // Reading the contents of example imem.txt file to memory variable
+//      $readmemh("imem.txt", dualport_memory);  
+// end
+// //`endif
+// `else
+// initial
+// begin
+//      // Reading the contents of example imem.txt file to memory variable
+//     // $readmemh("sdk/example-linux/imem.txt", dualport_memory);  
+// end
+// `endif
 
 //============================ Main memory module ============================//
 // Connect the local signals to appropriate IOs of the module
