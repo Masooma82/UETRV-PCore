@@ -96,10 +96,12 @@ uint64_t string_to_uint64(char *string) {
     return result;
 };
 // =============================================================================
+
 struct list {
     uint32_t value;
     char pad[28];
 };
+typedef struct list element;
 typedef struct list element;
 // =============================================================================
 int main (void) {
@@ -110,68 +112,59 @@ int main (void) {
    const char minst[9] = {'\r','I','n','s','t','r', '=', '\r'};
          // Read cycle count
     volatile uint32_t cycles_start = read_csr_mcycle(); // mcycle CSR
-     uint32_t size=1024;
+    uint32_t size=1024;
     uint32_t repetitions=10000;
+
     uint32_t i = 0;
     uint32_t jump = 0;
-    uint32_t count = 0;
+    uint32_t print = 0;
 
     element ptr_vector[size];
-
-    for (i = 0; i < size; i++) {
-        ptr_vector[i].value = 1;
-    }
 
     asm volatile ("nop");
     asm volatile ("nop");
     asm volatile ("nop");
     for (i = 0; i < repetitions; i++) {
         for (jump = 0; jump <= size - 32; jump += 32) {
-            // ~ asm volatile("mov (%1), %0" : "=r" (count0) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 64(%1), %0" : "=r" (count1) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 128(%1), %0" : "=r" (count2) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 192(%1), %0" : "=r" (count3) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 256(%1), %0" : "=r" (count4) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 320(%1), %0" : "=r" (count5) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 384(%1), %0" : "=r" (count6) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 448(%1), %0" : "=r" (count7) : "r" (ptr_vector[jump].value) : );
+            ptr_vector[jump + 0].value = jump;
+            ptr_vector[jump + 1].value = jump;
+            ptr_vector[jump + 2].value = jump;
+            ptr_vector[jump + 3].value = jump;
+            ptr_vector[jump + 4].value = jump;
+            ptr_vector[jump + 5].value = jump;
+            ptr_vector[jump + 6].value = jump;
+            ptr_vector[jump + 7].value = jump;
 
-            count += ptr_vector[jump + 0].value;
-            count += ptr_vector[jump + 1].value;
-            count += ptr_vector[jump + 2].value;
-            count += ptr_vector[jump + 3].value;
-            count += ptr_vector[jump + 4].value;
-            count += ptr_vector[jump + 5].value;
-            count += ptr_vector[jump + 6].value;
-            count += ptr_vector[jump + 7].value;
+            ptr_vector[jump + 8].value = jump;
+            ptr_vector[jump + 9].value = jump;
+            ptr_vector[jump + 10].value = jump;
+            ptr_vector[jump + 11].value = jump;
+            ptr_vector[jump + 12].value = jump;
+            ptr_vector[jump + 13].value = jump;
+            ptr_vector[jump + 14].value = jump;
+            ptr_vector[jump + 15].value = jump;
 
-            count += ptr_vector[jump + 8].value;
-            count += ptr_vector[jump + 9].value;
-            count += ptr_vector[jump + 10].value;
-            count += ptr_vector[jump + 11].value;
-            count += ptr_vector[jump + 12].value;
-            count += ptr_vector[jump + 13].value;
-            count += ptr_vector[jump + 14].value;
-            count += ptr_vector[jump + 15].value;
+            ptr_vector[jump + 16].value = jump;
+            ptr_vector[jump + 17].value = jump;
+            ptr_vector[jump + 18].value = jump;
+            ptr_vector[jump + 19].value = jump;
+            ptr_vector[jump + 20].value = jump;
+            ptr_vector[jump + 21].value = jump;
+            ptr_vector[jump + 22].value = jump;
+            ptr_vector[jump + 23].value = jump;
 
-            count += ptr_vector[jump + 16].value;
-            count += ptr_vector[jump + 17].value;
-            count += ptr_vector[jump + 18].value;
-            count += ptr_vector[jump + 19].value;
-            count += ptr_vector[jump + 20].value;
-            count += ptr_vector[jump + 21].value;
-            count += ptr_vector[jump + 22].value;
-            count += ptr_vector[jump + 23].value;
-
-            count += ptr_vector[jump + 24].value;
-            count += ptr_vector[jump + 25].value;
-            count += ptr_vector[jump + 26].value;
-            count += ptr_vector[jump + 27].value;
-            count += ptr_vector[jump + 28].value;
-            count += ptr_vector[jump + 29].value;
-            count += ptr_vector[jump + 30].value;
-            count += ptr_vector[jump + 31].value;
+            ptr_vector[jump + 24].value = jump;
+            ptr_vector[jump + 25].value = jump;
+            ptr_vector[jump + 26].value = jump;
+            ptr_vector[jump + 27].value = jump;
+            ptr_vector[jump + 28].value = jump;
+            ptr_vector[jump + 29].value = jump;
+            ptr_vector[jump + 30].value = jump;
+            ptr_vector[jump + 31].value = jump;
+            // ~ asm volatile ("nop");
         }
+        print += ptr_vector[0].value;
+        ptr_vector[0].pad[0] = 0;
     }
     asm volatile ("nop");
     asm volatile ("nop");

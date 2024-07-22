@@ -95,109 +95,62 @@ uint64_t string_to_uint64(char *string) {
     }
     return result;
 };
-// =============================================================================
-struct list {
-    uint32_t value;
-    char pad[28];
-};
-typedef struct list element;
+        
 // =============================================================================
 int main (void) {
-    Uetrv32_Uart_Init(UART_BAUD_DIV);
-    int ct=0;
+   Uetrv32_Uart_Init(UART_BAUD_DIV);
+    
    const char done[8] = {'D','o','n','e','!', '\n', '\r'};
    const char mcycl[8] = {'C','y','c','l','e', '=', '\r'};
-   const char minst[9] = {'\r','I','n','s','t','r', '=', '\r'};
-         // Read cycle count
+   const char minst[9] = {'\r','I','n','s','t','r', '=', '\r'};  
+    int ct=0;
+    int repetitions = 10000;
+    // Read cycle count
     volatile uint32_t cycles_start = read_csr_mcycle(); // mcycle CSR
-     uint32_t size=1024;
-    uint32_t repetitions=10000;
+
     uint32_t i = 0;
-    uint32_t jump = 0;
-    uint32_t count = 0;
-
-    element ptr_vector[size];
-
-    for (i = 0; i < size; i++) {
-        ptr_vector[i].value = 1;
+    uint32_t print = 0;
+    uint32_t count[64];
+    for (i = 0; i < 64; i++) {
+        count[i] = 0;
     }
 
     asm volatile ("nop");
     asm volatile ("nop");
     asm volatile ("nop");
-    for (i = 0; i < repetitions; i++) {
-        for (jump = 0; jump <= size - 32; jump += 32) {
-            // ~ asm volatile("mov (%1), %0" : "=r" (count0) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 64(%1), %0" : "=r" (count1) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 128(%1), %0" : "=r" (count2) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 192(%1), %0" : "=r" (count3) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 256(%1), %0" : "=r" (count4) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 320(%1), %0" : "=r" (count5) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 384(%1), %0" : "=r" (count6) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 448(%1), %0" : "=r" (count7) : "r" (ptr_vector[jump].value) : );
 
-            count += ptr_vector[jump + 0].value;
-            count += ptr_vector[jump + 1].value;
-            count += ptr_vector[jump + 2].value;
-            count += ptr_vector[jump + 3].value;
-            count += ptr_vector[jump + 4].value;
-            count += ptr_vector[jump + 5].value;
-            count += ptr_vector[jump + 6].value;
-            count += ptr_vector[jump + 7].value;
+    for (i = 1; i <= repetitions; i++);
 
-            count += ptr_vector[jump + 8].value;
-            count += ptr_vector[jump + 9].value;
-            count += ptr_vector[jump + 10].value;
-            count += ptr_vector[jump + 11].value;
-            count += ptr_vector[jump + 12].value;
-            count += ptr_vector[jump + 13].value;
-            count += ptr_vector[jump + 14].value;
-            count += ptr_vector[jump + 15].value;
+    asm volatile ("nop");
+    asm volatile ("nop");
+    asm volatile ("nop");
 
-            count += ptr_vector[jump + 16].value;
-            count += ptr_vector[jump + 17].value;
-            count += ptr_vector[jump + 18].value;
-            count += ptr_vector[jump + 19].value;
-            count += ptr_vector[jump + 20].value;
-            count += ptr_vector[jump + 21].value;
-            count += ptr_vector[jump + 22].value;
-            count += ptr_vector[jump + 23].value;
-
-            count += ptr_vector[jump + 24].value;
-            count += ptr_vector[jump + 25].value;
-            count += ptr_vector[jump + 26].value;
-            count += ptr_vector[jump + 27].value;
-            count += ptr_vector[jump + 28].value;
-            count += ptr_vector[jump + 29].value;
-            count += ptr_vector[jump + 30].value;
-            count += ptr_vector[jump + 31].value;
-        }
+    for (i = 0; i < 64; i++) {
+        print += count[i];
     }
-    asm volatile ("nop");
-    asm volatile ("nop");
-    asm volatile ("nop");
-// Read instruction count
+    (void) print;
+
+    // Read instruction count
     volatile uint32_t instrs_end = read_csr_minstret(); // minstret CSR
     // Calculate IPC
     volatile uint32_t cycles_end = read_csr_mcycle(); // mcycle CSR
     uint32_t cycles = cycles_end - cycles_start;
     uint32_t instrs = instrs_end; // Assuming no interrupts
-    char buffer[28];
+    char buffer[20];
     intToString(cycles, buffer);
 	for(ct = 0; ct < 8; ct++) {
     	  Uetrv32_Uart_Tx((mcycl[ct])); 
   	}  
-	for(ct = 0; ct < 12; ct++) {
+	for(ct = 0; ct < 8; ct++) {
     	  Uetrv32_Uart_Tx((buffer[ct])); 
   	}  
     intToString(instrs, buffer);
 	for(ct = 0; ct < 9; ct++) {
     	  Uetrv32_Uart_Tx((minst[ct])); 
   	}  
-	for(ct = 0; ct < 12; ct++) {
+	for(ct = 0; ct < 8; ct++) {
     	  Uetrv32_Uart_Tx((buffer[ct])); 
   	}  
 
 	return 0;
-
 }

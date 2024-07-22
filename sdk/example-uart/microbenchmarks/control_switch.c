@@ -95,109 +95,134 @@ uint64_t string_to_uint64(char *string) {
     }
     return result;
 };
-// =============================================================================
-struct list {
-    uint32_t value;
-    char pad[28];
-};
-typedef struct list element;
+        
 // =============================================================================
 int main (void) {
-    Uetrv32_Uart_Init(UART_BAUD_DIV);
-    int ct=0;
+   Uetrv32_Uart_Init(UART_BAUD_DIV);
+    
    const char done[8] = {'D','o','n','e','!', '\n', '\r'};
    const char mcycl[8] = {'C','y','c','l','e', '=', '\r'};
-   const char minst[9] = {'\r','I','n','s','t','r', '=', '\r'};
-         // Read cycle count
+   const char minst[9] = {'\r','I','n','s','t','r', '=', '\r'};  
+    asm volatile ("nop");
+    asm volatile ("nop");
+    asm volatile ("nop");
+    // Read cycle count
     volatile uint32_t cycles_start = read_csr_mcycle(); // mcycle CSR
-     uint32_t size=1024;
-    uint32_t repetitions=10000;
+    uint32_t repetitions = 10000;
+    int count=0;
+    uint32_t inner_repetitions;
+    inner_repetitions = repetitions / 10;
+
     uint32_t i = 0;
-    uint32_t jump = 0;
-    uint32_t count = 0;
+    uint32_t jump = 1;
+    uint32_t print = 1;
 
-    element ptr_vector[size];
-
-    for (i = 0; i < size; i++) {
-        ptr_vector[i].value = 1;
-    }
+    uint32_t jump_1 = inner_repetitions * 1;
+    uint32_t jump_2 = inner_repetitions * 2;
+    uint32_t jump_3 = inner_repetitions * 3;
+    uint32_t jump_4 = inner_repetitions * 4;
+    uint32_t jump_5 = inner_repetitions * 5;
+    uint32_t jump_6 = inner_repetitions * 6;
+    uint32_t jump_7 = inner_repetitions * 7;
+    uint32_t jump_8 = inner_repetitions * 8;
+    uint32_t jump_9 = inner_repetitions * 9;
+    uint32_t jump_10 = inner_repetitions * 10;
 
     asm volatile ("nop");
     asm volatile ("nop");
     asm volatile ("nop");
+
     for (i = 0; i < repetitions; i++) {
-        for (jump = 0; jump <= size - 32; jump += 32) {
-            // ~ asm volatile("mov (%1), %0" : "=r" (count0) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 64(%1), %0" : "=r" (count1) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 128(%1), %0" : "=r" (count2) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 192(%1), %0" : "=r" (count3) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 256(%1), %0" : "=r" (count4) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 320(%1), %0" : "=r" (count5) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 384(%1), %0" : "=r" (count6) : "r" (ptr_vector[jump].value) : );
-            // ~ asm volatile("mov 448(%1), %0" : "=r" (count7) : "r" (ptr_vector[jump].value) : );
+        switch (jump) {
+            case 1:
+                if (i > jump_1)
+                    jump++;
+                    print += 1;
+            break;
 
-            count += ptr_vector[jump + 0].value;
-            count += ptr_vector[jump + 1].value;
-            count += ptr_vector[jump + 2].value;
-            count += ptr_vector[jump + 3].value;
-            count += ptr_vector[jump + 4].value;
-            count += ptr_vector[jump + 5].value;
-            count += ptr_vector[jump + 6].value;
-            count += ptr_vector[jump + 7].value;
+            case 2:
+                if (i > jump_2)
+                    jump++;
+                    print += 2;
+            break;
 
-            count += ptr_vector[jump + 8].value;
-            count += ptr_vector[jump + 9].value;
-            count += ptr_vector[jump + 10].value;
-            count += ptr_vector[jump + 11].value;
-            count += ptr_vector[jump + 12].value;
-            count += ptr_vector[jump + 13].value;
-            count += ptr_vector[jump + 14].value;
-            count += ptr_vector[jump + 15].value;
+            case 3:
+                if (i > jump_3)
+                    jump++;
+                    print += 3;
+            break;
 
-            count += ptr_vector[jump + 16].value;
-            count += ptr_vector[jump + 17].value;
-            count += ptr_vector[jump + 18].value;
-            count += ptr_vector[jump + 19].value;
-            count += ptr_vector[jump + 20].value;
-            count += ptr_vector[jump + 21].value;
-            count += ptr_vector[jump + 22].value;
-            count += ptr_vector[jump + 23].value;
+            case 4:
+                if (i > jump_4)
+                    jump++;
+                    print += 4;
+            break;
 
-            count += ptr_vector[jump + 24].value;
-            count += ptr_vector[jump + 25].value;
-            count += ptr_vector[jump + 26].value;
-            count += ptr_vector[jump + 27].value;
-            count += ptr_vector[jump + 28].value;
-            count += ptr_vector[jump + 29].value;
-            count += ptr_vector[jump + 30].value;
-            count += ptr_vector[jump + 31].value;
+            case 5:
+                if (i > jump_5)
+                    jump++;
+                    print += 5;
+            break;
+
+            case 6:
+                if (i > jump_6)
+                    jump++;
+                    print += 6;
+            break;
+
+            case 7:
+                if (i > jump_7)
+                    jump++;
+                    print += 7;
+            break;
+
+            case 8:
+                if (i > jump_8)
+                    jump++;
+                    print += 8;
+            break;
+
+            case 9:
+                if (i > jump_9)
+                    jump++;
+                    print += 9;
+            break;
+
+            case 10:
+                if (i > jump_10)
+                    jump++;
+                    print += 10;
+            break;
         }
     }
+
     asm volatile ("nop");
     asm volatile ("nop");
     asm volatile ("nop");
-// Read instruction count
+
+    (void) print;
+
+    // Read instruction count
     volatile uint32_t instrs_end = read_csr_minstret(); // minstret CSR
     // Calculate IPC
     volatile uint32_t cycles_end = read_csr_mcycle(); // mcycle CSR
     uint32_t cycles = cycles_end - cycles_start;
     uint32_t instrs = instrs_end; // Assuming no interrupts
-    char buffer[28];
+    char buffer[20];
     intToString(cycles, buffer);
-	for(ct = 0; ct < 8; ct++) {
-    	  Uetrv32_Uart_Tx((mcycl[ct])); 
+	for(count = 0; count < 8; count++) {
+    	  Uetrv32_Uart_Tx((mcycl[count])); 
   	}  
-	for(ct = 0; ct < 12; ct++) {
-    	  Uetrv32_Uart_Tx((buffer[ct])); 
+	for(count = 0; count < 8; count++) {
+    	  Uetrv32_Uart_Tx((buffer[count])); 
   	}  
     intToString(instrs, buffer);
-	for(ct = 0; ct < 9; ct++) {
-    	  Uetrv32_Uart_Tx((minst[ct])); 
+	for(count = 0; count < 9; count++) {
+    	  Uetrv32_Uart_Tx((minst[count])); 
   	}  
-	for(ct = 0; ct < 12; ct++) {
-    	  Uetrv32_Uart_Tx((buffer[ct])); 
+	for(count = 0; count < 8; count++) {
+    	  Uetrv32_Uart_Tx((buffer[count])); 
   	}  
 
 	return 0;
-
 }
